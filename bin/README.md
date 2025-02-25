@@ -36,6 +36,6 @@ This file is to remind us about the usability of Git and Github with the followi
 
 5.  **Commit** those changes so they can save locally `git commit -m "Your commit message"`
 
-6.   Always check that you are in **your** branch with the following line (or with the tab on the right side of R studio)
+6.  Always check that you are in **your** branch with the following line (or with the tab on the right side of R studio)
 
 7.  **Push** your changes to the remote branch `git push origin <your_branch`
