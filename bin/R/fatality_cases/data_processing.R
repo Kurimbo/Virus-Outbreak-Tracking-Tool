@@ -5,7 +5,7 @@
 
 # LIBRARIES #####
 source("bin/R/fatality_cases/libraries.R")
-#comment
+
 # READING DATA ####
 # Read all four sheets into separate data frames
 texas_fatality_cases_2020 <- read_xlsx("Datasets/pre_processing/Texas COVID-19 Fatality Count Data by County.xlsx", sheet = 1, skip = 2)
