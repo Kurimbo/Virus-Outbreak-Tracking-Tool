@@ -85,6 +85,8 @@ texas_by_zipcode <- texas_by_zipcode %>%
   janitor::clean_names() #%>% 
 
 length(unique(texas_by_zipcode$zip_code))
+
+texas_by_zipcode
 ## Data Cleaning
 # Spatial ----------------
 
