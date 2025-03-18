@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WinFormsApp1VOTSVOTS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe5000cc368937b6c4b255c2e9716cf211f5fdd1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5102169d9647c681590ee19c79c8b724e7190dba")]
 [assembly: System.Reflection.AssemblyProductAttribute("WinFormsApp1VOTSVOTS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WinFormsApp1VOTSVOTS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

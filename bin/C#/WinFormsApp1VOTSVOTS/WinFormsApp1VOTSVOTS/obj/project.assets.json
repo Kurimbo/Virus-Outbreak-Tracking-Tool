@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj",
+      "projectUniqueName": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj",
       "projectName": "WinFormsApp1VOTSVOTS",
-      "projectPath": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj",
+      "projectPath": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj",
       "packagesPath": "C:\\Users\\IZAKD\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\obj\\",
+      "outputPath": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
