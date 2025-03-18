@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|c:\\users\\izakd\\onedrive\\documents\\github\\virus-outbreak-tracking-tool\\bin\\c#\\winformsapp1votsvots\\winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|c:\\users\\izakd\\onedrive\\documents\\github\\virus-outbreak-tracking-tool\\bin\\c#\\winformsapp1votsvots\\winformsapp1votsvots\\enhancedareapage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\enhancedareapage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|c:\\users\\izakd\\onedrive\\documents\\github\\virus-outbreak-tracking-tool\\bin\\c#\\winformsapp1votsvots\\winformsapp1votsvots\\votsreources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\votsreources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|c:\\users\\izakd\\onedrive\\documents\\github\\virus-outbreak-tracking-tool\\bin\\c#\\winformsapp1votsvots\\winformsapp1votsvots\\enhancedareapage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\enhancedareapage.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|c:\\users\\izakd\\onedrive\\documents\\github\\virus-outbreak-tracking-tool\\bin\\c#\\winformsapp1votsvots\\winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CF935AA9-070D-4D33-BB60-A9E2E8741F03}|WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS.csproj|solutionrelative:winformsapp1votsvots\\enhancedareapage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +34,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "EnhancedAreaPage.cs [Design]",
               "DocumentMoniker": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\EnhancedAreaPage.cs",
               "RelativeDocumentMoniker": "WinFormsApp1VOTSVOTS\\EnhancedAreaPage.cs",
@@ -52,25 +52,27 @@
               "RelativeDocumentMoniker": "WinFormsApp1VOTSVOTS\\VOTSReources.Designer.cs",
               "ToolTip": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\VOTSReources.Designer.cs",
               "RelativeToolTip": "WinFormsApp1VOTSVOTS\\VOTSReources.Designer.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAnwB8AAAARAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAnwB8AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T17:10:12.631Z"
+              "WhenOpened": "2025-03-18T17:10:12.631Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "EnhancedAreaPage.Designer.cs",
               "DocumentMoniker": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\EnhancedAreaPage.Designer.cs",
               "RelativeDocumentMoniker": "WinFormsApp1VOTSVOTS\\EnhancedAreaPage.Designer.cs",
               "ToolTip": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\EnhancedAreaPage.Designer.cs",
               "RelativeToolTip": "WinFormsApp1VOTSVOTS\\EnhancedAreaPage.Designer.cs",
-              "ViewState": "AgIAALYAAAAAAAAAAAAcwM0AAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAALwAAAAAAAAAAAAcwM4AAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-18T17:10:59.151Z"
+              "WhenOpened": "2025-03-18T17:10:59.151Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "EnhancedAreaPage.cs",
               "DocumentMoniker": "C:\\Users\\IZAKD\\OneDrive\\Documents\\GitHub\\Virus-Outbreak-Tracking-Tool\\bin\\C#\\WinFormsApp1VOTSVOTS\\WinFormsApp1VOTSVOTS\\EnhancedAreaPage.cs",
               "RelativeDocumentMoniker": "WinFormsApp1VOTSVOTS\\EnhancedAreaPage.cs",

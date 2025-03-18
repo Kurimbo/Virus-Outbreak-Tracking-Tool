@@ -204,6 +204,7 @@ namespace WinFormsApp1VOTSVOTS
             this.Controls.Add(logoPictureBox);
 
             */
+            //what the sigma
 
 
         }
