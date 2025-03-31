@@ -23,51 +23,54 @@ source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_To
 
 
 ```{r data processing, include=FALSE}
-spatial_data <- reactive({
-       # req(input$County)
+#source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/data_processing.R")
+
+county_names <- unique(texas_confirmed_cases_combined_long$County)
+```
+
+
+
+```{r eruptions, echo=FALSE, cache=TRUE}
+ui <- fluidPage(
+  titlePanel("Bexar County Medical Licensed Professionals"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("County", "Select a county:", choices = county_names)),
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Map", leafletOutput("map")),
+        tabPanel("Demo Tab"), #plotOutput("county_plot1")),
+        tabPanel("License Type")#plotOutput("county_plot2"))
+      )
+    )
+  )
+)
+
+
+```
+
+
+```{r tabsets, echo=FALSE, cache=TRUE}
+# Server Component
+server <- function(input, output, session) {
+#make dataset responsive to the user input (Click)
+source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/setup.R", echo = T)
+  
+  spatial_data <- reactive({
+        req(input$County)
+
    texas_spatial[texas_spatial$County == input$County, ]
 })
 
-county_names <- unique(texas_confirmed_cases_combined_long$County)
-available_years <- unique(texas_confirmed_cases_combined_long$year)
-month_names <- unique(texas_confirmed_cases_combined_long$month)
-
-#add virus names later
-```
-
-Sidebar {.sidebar}
-======================================================================
-
-```{r input maker}
-selectInput("county", label = "Select a county/city:", choices = county_names)
-selectInput("year","Select Year:", choices = available_years)
-sliderInput("month","Select Month:", min = 1, max = 12, 
-              value = 3,  # Default to March
-              step = 1, 
-              ticks = TRUE, 
-              animate = TRUE)
-
-# sliderInput('dataset', label = 'Select the type of data:', min = 0.1, max = 0.9, value = 0.3,
-#           step = 0.1) #
-# I think I can... store 2 layers of data on the map (as an action button OR)
-# Have the user select the dataset they wanna look at from outside
-```
-
-Confirmed Cases
-======================================================================
-  Row 
------------------------------------------------------------------------
-### Map
-
-```{r tabsets, echo=FALSE, cache=TRUE}
+ #if exists(merged_data)
+  # print("merged_data exists")
+  
   observe({ #update th county selection
    updateSelectInput(session, "County", choices = unique(spatial_data()$County))
   })
-
- #if exists(merged_data)
-  # print("merged_data exists")
+  
   # Render Leaflet Map
-output$map <- renderLeaflet({
+  output$map <- renderLeaflet({
     
     sp <- spatial_data() # store the spatial county data
 
@@ -79,8 +82,6 @@ output$map <- renderLeaflet({
       fillOpacity = 0.2,
       layerId = ~County
       )
-    
-    map
   })
   
   # click county
@@ -144,14 +145,16 @@ county_data <- reactive({
   # Fetch data for the clicked tract
   return(filter(spatial_data(), County == click_county()))
 })
-
 leafletOutput("map")
 
-
+}
+# Run App
 ```
 
 
 
+```{r,runner , include = FALSE}
+shinyApp(ui,server)
+#since the output is null... maybe the data is not being loaded
 
-
-
+```
