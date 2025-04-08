@@ -77,8 +77,12 @@ texas_confirmed_cases_combined_long <-texas_confirmed_cases_combined_long %>%
   arrange((County))
 
 texas_confirmed_cases_combined_long <- texas_confirmed_cases_combined_long %>% 
-  mutate(month = month.name[month])
-
+  mutate(month = month.name[month]) %>% 
+  mutate(disease = "covid") %>% 
+  mutate(state = "Texas") 
+  
+texas_confirmed_cases_combined_long$disease <- factor(texas_confirmed_cases_combined_long$disease)
+texas_confirmed_cases_combined_long$state <- "Texas" 
 #write.csv(texas_confirmed_cases_combined_long,"Datasets/processed/texas_confirmed_cases.csv")
 #write.csv(texas_confirmed_cases_2020_long,file.path()) if needed,put this path somewhere
 
