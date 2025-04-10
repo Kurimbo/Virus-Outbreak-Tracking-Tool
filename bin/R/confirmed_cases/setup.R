@@ -14,10 +14,10 @@ library(reshape2)
 library(openxlsx)
 library(sf)
 library(janitor)
-
+library(plotly)
 # Load Data Processing Script (Ensure the file exists before sourcing)
 #Software Engineering Class
-#
+
 #Authors: Elias Ciudad, Van Nguyen, Amy Torres
 #
 #

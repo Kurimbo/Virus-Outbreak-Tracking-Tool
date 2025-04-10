@@ -71,7 +71,7 @@ Confirmed Cases
 
 ```{r tabsets, echo=FALSE, cache=TRUE}
   observe({ #update th county selection
-   updateSelectInput(session, "County", choices = unique(spatial_data()$County))
+   updateSelectInput(session, "County", choices = sort(unique(spatial_data()$County)))
   })
 
  #if exists(merged_data)
@@ -165,22 +165,26 @@ leafletOutput("map")
  # if no selection is given then by whole year (how to toggle that option ----  maybe a checkbox?)
 #make a barplot that shows confirmed cases in the zipcode area, by month 
 output$month_county <- renderPlot({   #now the error is here #so this works, A LOT
-  
+
   txvirus <- texas_confirmed_cases()  # Get the zipcode data based on user clicks FROM my dataset
   cd <- county_data()  # Get the zipcode data based on user clicks
   #table
   # Filter data by inputed zipcode (the click, the click)
   #bexar_med<- bm %>% filter(zipcode == zd)
   
+  
+  # add something that sees the month being selected in the sidebar
+  # observe 
   #create filtered data frame for age data
   cases_per_month_county<- cd %>% 
   select(County,month,year,confirmed_cases_per_day,disease) %>% 
-  group_by(County,month) %>% 
-  summarize(confirmed_cases_per_day = n())
+  group_by(County,month,disease) %>% 
+  summarize(confirmed_cases_per_day = n(), .groups = "drop")
 
+  print(paste("Plotting for county:", unique(cd$County)))
 
 # Create the zipcode-specific age distribution plot using ggplot2
-  ggplot(cases_per_month_county, aes(x = County, y = confirmed_cases_per_day)) +
+  ggplot(cases_per_month_county, aes(x = month, y = confirmed_cases_per_day,fill = disease)) +
     geom_bar(stat = "identity", width = 0.7) +
     theme_minimal() +
     labs(title = paste0("Confirmed Cases in County ", unique(cd$County)),
@@ -200,6 +204,7 @@ output$month_county <- renderPlot({   #now the error is here #so this works, A L
 
 # In the UI section, add the conditional output rendering
 #uiOutput("ageplot")  
+
 plotOutput("month_county")
 
 ```
