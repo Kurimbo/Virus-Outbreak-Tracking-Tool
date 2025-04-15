@@ -1,0 +1,12 @@
+name: publishable_dashboard
+title: publishable_dashboard
+username: ceb7mh-elias0ciudad
+account: ceb7mh-elias0ciudad
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14513734
+bundleId: 10116479
+url: https://ceb7mh-elias0ciudad.shinyapps.io/publishable_dashboard/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

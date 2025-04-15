@@ -4,31 +4,31 @@ library(dplyr)       # For data manipulation
 library(readxl)      # For reading Excel files
 library(scales)      # For better axis scaling
 library(plotly)      # For interactive ggplot visualizations
-
+library(tidyverse)
 # ------------------------
 # Load and prepare datasets
 # ------------------------
 
 # COVID dataset
-covid <- read_excel("Datasets/cleaned/Texas_COVID19_Cases_Cleaned.xlsx", sheet = 1) %>%
+covid <- read_excel("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/cleaned/Texas_COVID19_Cases_Cleaned.xlsx", sheet = 1) %>%
   rename(Cases = Total_Cases) %>%                      # Standardize column name for consistency
   mutate(Virus = "COVID-19",                          # Add identifier
          Month = as.character(Month))                 # Ensure Month is character for merging later
 
 # Flu dataset
-flu <- read_excel("Datasets/cleaned/Flu_Cases_Cleaned.xlsx", sheet = 3) %>%
+flu <- read_excel("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/cleaned/Flu_Cases_Cleaned.xlsx", sheet = 3) %>%
   rename(Cases = Estimated_Cases) %>%
   mutate(Virus = "Flu",
          Month = as.character(Month))
 
 # TB dataset
-tb <- read_excel("Datasets/cleaned/TB_Cases_Cleaned.xlsx", sheet = 3) %>%
+tb <- read_excel("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/cleaned/TB_Cases_Cleaned.xlsx", sheet = 3) %>%
   rename(Cases = Total_Cases) %>%
   mutate(Virus = "TB",
          Month = as.character(Month))
 
 # HIV dataset
-hiv <- read_excel("Datasets/cleaned/HIV_Cases_Cleaned.xlsx", sheet = 3) %>%
+hiv <- read_excel("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/cleaned/HIV_Cases_Cleaned.xlsx", sheet = 3) %>%
   rename(Cases = Estimated_Cases) %>%
   mutate(Virus = "HIV",
          Month = as.character(Month))
@@ -36,7 +36,7 @@ hiv <- read_excel("Datasets/cleaned/HIV_Cases_Cleaned.xlsx", sheet = 3) %>%
 # Combine all datasets into one
 all_data <<- bind_rows(covid, flu, tb, hiv)
 all_data$County <- trimws(all_data$County)                # Remove whitespace from county names
-all_data <- all_data %>% filter(Year %in% c(2020:2023))   # Filter to selected years only
+all_data <- all_data %>% filter(Year %in% c(2020:2023)) %>% mutate(State = "Texas")  # Filter to selected years only
 
 # ------------------------
 # Define virus-specific colors for bar plots
@@ -64,7 +64,7 @@ ui <- fluidPage(
     mainPanel(
       conditionalPanel(
         condition = "output.noData",
-        tags$h4("No data available for the selected filters.", style = "color: red;")
+        #tags$h3("No data available for the selected filters.", style = "color: red;")
       ),
       plotlyOutput("barPlot")
     )

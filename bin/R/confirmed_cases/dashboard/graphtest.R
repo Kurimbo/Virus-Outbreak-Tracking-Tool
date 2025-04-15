@@ -1,11 +1,13 @@
-install.packages("shiny")
-install.packages("plotly")
 
 library(shiny)
 library(plotly)
 library(dplyr)
 library(tidyr)
 library(readr)
+all_data %>% 
+  select(Month) %>%
+  group_by(Month) %>% 
+  count() %>%  print (n=50)
 
 # Example data loading (replace this with your actual data)
 # Your data should have columns: Month, Disease, CountType, Count

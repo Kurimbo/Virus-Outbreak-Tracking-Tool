@@ -1,4 +1,19 @@
+
 # Load necessary libraries
+
+library(ggplot2)
+library(tidyverse)
+library(usethis)
+library(git2r)
+library(stats)
+library(readxl)
+library(readr)
+library(lubridate)
+library(reshape2)
+library(openxlsx)
+library(sf)
+library(janitor)
+library(Matrix)
 library(ggplot2)
 library(dplyr)
 library(lubridate)
@@ -6,12 +21,11 @@ library(readr)
 library(tidyverse)
 library(readxl)
 library(writexl)
-
 # Read in datasets (skip first two rows to remove extra headers)
-texas_confirmed_cases_2020 <- read_xlsx("Datasets/pre_processing/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 1, skip = 2)
-texas_confirmed_cases_2021 <- read_xlsx("Datasets/pre_processing/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 2, skip = 2)
-texas_confirmed_cases_2022 <- read_xlsx("Datasets/pre_processing/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 3, skip = 2)
-texas_confirmed_cases_2023 <- read_xlsx("Datasets/pre_processing/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 4, skip = 2)
+texas_confirmed_cases_2020 <- read_xlsx(path = "bin/R/confirmed_cases/dashboard/publishable_dashboard/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 1, skip = 2)
+texas_confirmed_cases_2021 <- read_xlsx(path = "bin/R/confirmed_cases/dashboard/publishable_dashboard/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 2, skip = 2)
+texas_confirmed_cases_2022 <- read_xlsx(path = "bin/R/confirmed_cases/dashboard/publishable_dashboard/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 3, skip = 2)
+texas_confirmed_cases_2023 <- read_xlsx(path = "bin/R/confirmed_cases/dashboard/publishable_dashboard/Texas COVID-19 New Confirmed Cases by County.xlsx", sheet = 4, skip = 2)
 
 # Ensure first column is correctly labeled as 'County'
 colnames(texas_confirmed_cases_2020)[1] <- "County"
@@ -108,6 +122,6 @@ print(unique(covid_cases_per_county_by_year$Year))  # Should include 2022 and 20
 print(unique(covid_cases_per_year$Year))  # Should include 2022 and 2023
 
 # Open the cleaned data in RStudio
-View(covid_cases_per_county_by_month)
-View(covid_cases_per_county_by_year)
-View(covid_cases_per_year)
+#View(covid_cases_per_county_by_month)
+#View(covid_cases_per_county_by_year)
+#View(covid_cases_per_year)

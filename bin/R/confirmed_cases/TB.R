@@ -5,8 +5,8 @@ library(tidyr)
 library(writexl)
 
 # Set file paths
-tb_annual_file <- "Datasets/pre_processing/TB_Cases_and_Rates_by_County_2017-2021.xlsx"
-tb_monthly_file <- "Datasets/pre_processing/Estimated_Monthly_TB_Cases_Texas_2019-2021.xlsx"
+tb_annual_file <- "D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/pre_processing/TB_Cases_and_Rates_by_County_2017-2021.xlsx"
+tb_monthly_file <- "D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/Datasets/pre_processing/Estimated_Monthly_TB_Cases_Texas_2019-2021.xlsx"
 
 ### CLEAN ANNUAL TB CASES (2017–2021)
 
@@ -63,7 +63,7 @@ colnames(tb_monthly) <- c("County", "Year", "Month", "Total_Cases")
 
 # Step 2: Clean and reformat
 tb_cases_per_county_by_month <- tb_monthly %>%
-  filter(!County %in% c("Tuberculosis", "County")) %>%
+  filter(!County %in% c("Tuberculoisis", "County")) %>%
   mutate(
     Year = as.integer(Year),
     Total_Cases = as.numeric(Total_Cases)
@@ -74,7 +74,9 @@ tb_cases_per_county_by_month <- tb_monthly %>%
     Year == 2019 ~ 2023,
     TRUE ~ Year
   )) %>%
-  arrange(County, Year, Month)
+  arrange(County, Year, Month) %>% 
+  mutate(Month = month.abb[Month])
+  
 
 ### EXPORT CLEANED DATA
 
@@ -89,9 +91,9 @@ write_xlsx(list(
 ), "Datasets/cleaned/TB_Cases_Cleaned.xlsx")
 
 # Optional: Preview in RStudio
-View(tb_cases_per_year)
-View(tb_cases_per_county_by_year)
-View(tb_cases_per_county_by_month)
+#View(tb_cases_per_year)
+#View(tb_cases_per_county_by_year)
+#View(tb_cases_per_county_by_month)
 
 
 

@@ -12,28 +12,29 @@ ui <- fluidPage(
   titlePanel("Virus Outbreak Tracking System"),
   sidebarLayout(
     sidebarPanel(
-      selectInput("state", label = "Select a state:", choices = unique(texas_confirmed_cases_combined_long$state)),
-      selectInput("year", "Select Year:", choices = unique(texas_confirmed_cases_combined_long$year)),
-    #  sliderInput("month", "Select Month:", min = 1, max = 12, value = 3, step = 1, ticks = TRUE, animate = TRUE)
+      selectInput("State", label = "Select a state:", choices = unique(all_data$State)),
+      selectInput("Year", "Select Year:", choices = unique(all_data$Year)),
+      checkboxGroupInput("Virus", "Select Viruses:",
+                         choices = unique(all_data$Virus),
+                         selected = unique(all_data$Virus))
     ),
     mainPanel(
       leafletOutput("map"),
-      plotOutput("month_county")
+      plotlyOutput("month_county")
     )
   )
 )
 
 server <- function(input, output, session) {
   spatial_data <- reactive({
-    texas_spatial[texas_spatial$state == input$state, ]
-    texas_spatial[texas_spatial$County == input$County, ]
-    
+    req(input$State)
+    texas_spatial %>% filter(State == input$State)
   })
   
   texas_confirmed_cases <- reactive({
-    texas_confirmed_cases_combined_long[texas_confirmed_cases_combined_long$state == input$state, ]
-    texas_confirmed_cases_combined_long[texas_confirmed_cases_combined_long$County == input$County, ]
-  #  texas_confirmed_cases_combined_long[texas_confirmed_cases_combined_long$state == input$state, ]
+    req(input$State)
+    all_data %>% filter(State == input$State, Virus %in% input$Virus)#, County == input$County, Year == input$Year)
+    #  texas_confirmed_cases_combined_long[texas_confirmed_cases_combined_long$state == input$state, ]
     })
   
   click_county <- eventReactive(input$map_shape_click, {
@@ -42,6 +43,7 @@ server <- function(input, output, session) {
   
   county_data <- reactive({
     req(click_county())
+    
     filter(texas_confirmed_cases(), County == click_county())
   })
   
@@ -53,8 +55,19 @@ server <- function(input, output, session) {
       addPolygons(
         stroke = TRUE, smoothFactor = 0.1,
         fillOpacity = 0.2,
-        layerId = ~County
-      )
+        layerId = ~County,
+        label = ~County,
+      #  fillColor = ~pal_area(Cases)
+      ) 
+    
+  
+    # now I need to add a mask here but... about what
+    # Calculate a proportion, ranges for new cases per year (which counties have been most affected based on..)
+    # Total cases per year?
+    # The map is not updated by month, but ON-CLICK
+    # 
+    
+    
   })
   
   observe({
@@ -88,21 +101,27 @@ server <- function(input, output, session) {
       )
   })
   
-  output$month_county <- renderPlot({
-    cd <- county_data()
-    cases_per_month_county <- cd %>%
-      select(County, month, year, confirmed_cases_per_day, disease) %>%
-      group_by(County, month, disease) %>%
-      summarize(confirmed_cases_per_day = n(), .groups = "drop")
+  output$month_county <- renderPlotly({
     
-    ggplot(cases_per_month_county, aes(x = month, y = confirmed_cases_per_day, fill = disease)) +
-      geom_bar(stat = "identity", width = 0.7) +
+    cd <- county_data()
+    
+    cases_per_month_county <- cd %>%
+      select(County,Month, Year, Cases, Virus) %>%
+      filter(Year == input$Year) %>% 
+      group_by(County,Month ,Virus) %>%
+      summarize(Cases = sum(Cases, na.rm= T), .groups = "drop")
+
+    p<- ggplot(cases_per_month_county, aes(x = Month , y = Cases, fill = Virus)) +
+      geom_bar(stat = "identity", position = position_dodge(width=0.8),width = 0.7) +
       theme_minimal() +
       labs(
         title = paste0("Confirmed Cases in County ", unique(cd$County)),
         x = "Month",
         y = "Count"
       )
+    
+    ggplotly(p, tooltip = "all")
+
   })
 }
 
