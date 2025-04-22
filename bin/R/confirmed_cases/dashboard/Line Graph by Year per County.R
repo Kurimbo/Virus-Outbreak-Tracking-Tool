@@ -33,10 +33,10 @@ read_virus_data <- function(file_name, virus_name, sheet_num = 1) {
 
 # Read and combine datasets
 all_data <- bind_rows(
-  read_virus_data("/Users/vannguyen/school/junior/software engineering/Virus-Outbreak-Tracking-Tool/Datasets/cleaned/Texas_COVID19_Cases_Cleaned.xlsx", "COVID-19", sheet_num = 2),
-  read_virus_data("/Users/vannguyen/school/junior/software engineering/Virus-Outbreak-Tracking-Tool/Datasets/cleaned/Flu_Cases_Cleaned.xlsx", "Flu", sheet_num = 1),
-  read_virus_data("/Users/vannguyen/school/junior/software engineering/Virus-Outbreak-Tracking-Tool/Datasets/cleaned/HIV_Cases_Cleaned.xlsx", "HIV", sheet_num = 1),
-  read_virus_data("/Users/vannguyen/school/junior/software engineering/Virus-Outbreak-Tracking-Tool/Datasets/cleaned/TB_Cases_Cleaned.xlsx", "TB", sheet_num = 2)
+  read_virus_data("Datasets/cleaned/Texas_COVID19_Cases_Cleaned.xlsx", "COVID-19", sheet_num = 2),
+  read_virus_data("Datasets/cleaned/Flu_Cases_Cleaned.xlsx", "Flu", sheet_num = 1),
+  read_virus_data("Datasets/cleaned/HIV_Cases_Cleaned.xlsx", "HIV", sheet_num = 1),
+  read_virus_data("Datasets/cleaned/TB_Cases_Cleaned.xlsx", "TB", sheet_num = 2)
 )
 
 # Standardize columns

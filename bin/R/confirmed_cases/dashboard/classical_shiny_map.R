@@ -4,28 +4,56 @@ library(leaflet)
 library(sf)
 library(dplyr)
 library(ggplot2)
-
+library(bslib)
 # Load your data here
 source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/setup.R")
 
-ui <- fluidPage(
-  titlePanel("Virus Outbreak Tracking System"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("State", label = "Select a state:", choices = unique(all_data$State)),
-      selectInput("Year", "Select Year:", choices = unique(all_data$Year)),
-      checkboxGroupInput("Virus", "Select Viruses:",
-                         choices = unique(all_data$Virus),
-                         selected = unique(all_data$Virus))
-    ),
-    mainPanel(
-      leafletOutput("map"),
-      plotlyOutput("month_county")
+ui <- page_navbar(
+  title = "Virus Outbreak Tracking System",
+  
+  nav_panel(
+    title = "Dashboard",  # Add a title to the tab
+    
+    sidebarLayout(
+      sidebarPanel(
+        selectInput("State", label = "Select a state:", choices = unique(all_data$State)),
+        selectInput("Year", label = "Select Year:", choices = unique(all_data$Year)),
+        checkboxGroupInput("Virus", label = "Select Viruses:",
+                           choices = unique(all_data$Virus),
+                           selected = unique(all_data$Virus))
+      ),
+      
+      mainPanel(
+        leafletOutput("map"),
+        plotlyOutput("month_county")
+      )
     )
+  ),
+  nav_panel(
+    title = "Line Graphs",  # Add a title to the tab
+    fluidPage(
+      titlePanel("Virus Outbreak Tracking System - Line Graph by County and Year"),
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("County", "Select County:",
+                      choices = sort(unique(all_data$County))),
+          selectInput("Virus", "Select Virus:",
+                      choices = sort(unique(all_data$Virus)))
+        ),
+        mainPanel(
+          plotlyOutput("linePlot")
+        )
+      )
+    )
+    
+    
   )
 )
 
 server <- function(input, output, session) {
+  
+  # First Tab
+  
   spatial_data <- reactive({
     req(input$State)
     texas_spatial %>% filter(State == input$State)
@@ -56,7 +84,7 @@ server <- function(input, output, session) {
         stroke = TRUE, smoothFactor = 0.1,
         fillOpacity = 0.2,
         layerId = ~County,
-        label = ~County,
+        label = ~County
       #  fillColor = ~pal_area(Cases)
       ) 
     
@@ -123,6 +151,37 @@ server <- function(input, output, session) {
     ggplotly(p, tooltip = "all")
 
   })
+  
+  #Second Tab
+  
+  second_tab_data <- reactive({
+    #virus_selected <- input$Virus[1]
+    
+    line_data %>%
+      filter(County == input$County, Virus == input$Virus) 
+  })
+  
+  output$linePlot <- renderPlotly({
+    second_data <- second_tab_data()
+    
+    second <- ggplot(second_data, aes(x = Year, y = Cases, 
+                                      
+                          text = paste("Year:", Year,
+                                       "<br>Cases:", Cases))) +
+      
+      geom_line(group = 1, color = "#2c7fb8", size = 1) +
+      geom_point(size = 2, color = "#2c7fb8") +
+      theme_minimal() +
+      labs(
+        title = paste("Case Trends for", paste(input$Virus, collapse = ", "), "in", input$County),
+        x = "Year", y = "Number of Cases"
+      ) +
+      scale_x_continuous(breaks = sort(unique(second_data$Year)))
+    
+    ggplotly(second, tooltip = "text")  # show custom hover info
+  })
+
+  
 }
 
 shinyApp(ui, server)
