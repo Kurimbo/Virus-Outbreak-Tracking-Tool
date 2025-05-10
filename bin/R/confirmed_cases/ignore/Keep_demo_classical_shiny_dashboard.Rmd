@@ -1,0 +1,160 @@
+---
+title: "Virus Outbreak Tracking System"
+author: "Elias Ciudad"
+date: "2025-03-31"
+runtime: shiny
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: menu
+    source_code: 
+    theme: simplex
+---
+
+```{r setup, include=FALSE}
+#sknitr::opts_chunk$set(echo = TRUE)
+source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/setup.R", echo = T)
+#maybe put it into a different format.... like the flexdashboard style to see if it runs
+#if (!exists("merged_data")) {
+#  stop("Error: merged_data not found. Check 'setup.R'.")
+#}
+```
+
+
+```{r data processing, include=FALSE}
+#source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/data_processing.R")
+
+county_names <- unique(texas_confirmed_cases_combined_long$County)
+```
+
+
+
+```{r eruptions, echo=FALSE, cache=TRUE}
+ui <- fluidPage(
+  titlePanel("Bexar County Medical Licensed Professionals"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("County", "Select a county:", choices = county_names)),
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Map", leafletOutput("map")),
+        tabPanel("Demo Tab"), #plotOutput("county_plot1")),
+        tabPanel("License Type")#plotOutput("county_plot2"))
+      )
+    )
+  )
+)
+
+
+```
+
+
+```{r tabsets, echo=FALSE, cache=TRUE}
+# Server Component
+server <- function(input, output, session) {
+#make dataset responsive to the user input (Click)
+source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/setup.R", echo = T)
+  
+  spatial_data <- reactive({
+        req(input$County)
+
+   texas_spatial[texas_spatial$County == input$County, ]
+})
+
+ #if exists(merged_data)
+  # print("merged_data exists")
+  
+  observe({ #update th county selection
+   updateSelectInput(session, "County", choices = unique(spatial_data()$County))
+  })
+  
+  # Render Leaflet Map
+  output$map <- renderLeaflet({
+    
+    sp <- spatial_data() # store the spatial county data
+
+    map <- leaflet(sp) %>%# tis dataset store the information (store map as out)
+      addProviderTiles("CartoDB.Positron") %>%
+      clearShapes() %>%
+      addPolygons(
+        stroke = TRUE, smoothFactor = 0.1,
+      fillOpacity = 0.2,
+      layerId = ~County
+      )
+  })
+  
+  # click county
+click_county <- eventReactive(input$map_shape_click, {  
+  #Observes the CLICKING in a MAP
+  x <- input$map_shape_click
+  y <- x$id
+  return(y)
+  
+  })
+
+
+county_numbers <- reactive({  #creates a variable that user can modify the output of via input (click)
+  input$map_shape_click$id
+  clicked_id <- input$map_shape_click$id # Get the id of the clicked shape, THIS is county
+  print(clicked_id) # Print the clicked ID, returns county
+  
+})
+
+observe({
+  req(county_numbers())
+  proxy <- leafletProxy("map")
+  sub <- dplyr::filter(spatial_data(), County %in% county_numbers())
+  
+  box <- st_bbox(sub) %>% as.vector()
+  
+  # Check if 'sub' is empty
+  if (nrow(sub) == 0) {
+    return(NULL) # No data to display
+  }
+  
+  # Clear old selection on map, and add new selection
+  proxy %>%      #When I click on a shape, this will make sure the NEW shape is highlighted and clear previous.
+    clearGroup(group = "sub") %>%
+    addPolygons(
+      data = sub, fill = FALSE, color = "#FFFF00", #color assigned to newer polygons
+      opacity = 1, group = "sub", weight = 1.5
+    ) %>%
+    fitBounds( #bounds of the polygon as array
+      lng1 = box[1],
+      lat1 = box[2],
+      lng2 = box[3],
+      lat2 = box[4]
+    )
+})
+
+
+# Capture and highlight clicked county
+  observeEvent(click_county(), {   #output depends on the click_county() function
+  # Add the clicked tract to the map in aqua, and remove when a new one is clicked
+  map <- leafletProxy("map") %>%
+    removeShape("County") %>%
+    addPolygons(
+      data = filter(spatial_data(), County == click_county()), fill = FALSE,
+      color = "#00FFFF", opacity = 1, layerId = "County",
+      weight = 1.2
+    )
+})
+
+county_data <- reactive({
+  # Fetch data for the clicked tract
+  return(filter(spatial_data(), County == click_county()))
+})
+leafletOutput("map")
+
+}
+# Run App
+```
+
+
+
+```{r,runner , include = FALSE}
+shinyApp(ui,server)
+#since the output is null... maybe the data is not being loaded
+
+```

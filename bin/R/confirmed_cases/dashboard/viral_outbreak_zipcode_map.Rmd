@@ -1,0 +1,216 @@
+---
+title: "Virus Outbreak Tracking System"
+author: "Elias Ciudad"
+date: "2025-03-31"
+runtime: shiny
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: menu
+    source_code: 
+    theme: simplex
+---
+```{r log, include= FALSE, echo = FALSE}
+
+#The plot is on-click but the map DOESN'T WORK HOW I WANT IT TO. It is doing
+```
+
+```{r setup, include=FALSE}
+#sknitr::opts_chunk$set(echo = TRUE)
+source("D:/Academical Things/Programming/R/Workspaces/Virus_Outbreak_Tracking_Tool/bin/R/confirmed_cases/setup.R", echo = T)
+#maybe put it into a different format.... like the flexdashboard style to see if it runs
+#if (!exists("merged_data")) {
+#  stop("Error: merged_data not found. Check 'setup.R'.")
+#}
+```
+
+
+```{r data processing, include=FALSE}
+spatial_data <- reactive({ #contains geometry
+       # req(input$County)
+   texas_spatial[texas_spatial$state == input$state, ]
+})
+
+texas_confirmed_cases <- reactive({ #contains confirmed cases
+  texas_confirmed_cases_combined_long[texas_confirmed_cases_combined_long$state == input$state, ]
+})
+
+
+county_names <- unique(texas_confirmed_cases_combined_long$County)
+available_years <- unique(texas_confirmed_cases_combined_long$year)
+month_names <- unique(texas_confirmed_cases_combined_long$month)
+state_name <- unique(texas_confirmed_cases_combined_long$state)
+#add virus names later
+```
+
+Sidebar {.sidebar}
+======================================================================
+
+```{r input maker}
+selectInput("state", label = "Select a state:", choices = state_name)
+#selectInput("county", label = "Select a county/city:", choices = county_names)
+selectInput("year","Select Year:", choices = available_years)
+sliderInput("month","Select Month:", min = 1, max = 12, 
+              value = 3,  # Default to March
+              step = 1, 
+              ticks = TRUE, 
+              animate = TRUE)
+
+# sliderInput('dataset', label = 'Select the type of data:', min = 0.1, max = 0.9, value = 0.3,
+#           step = 0.1) #
+# I think I can... store 2 layers of data on the map (as an action button OR)
+# Have the user select the dataset they wanna look at from outside
+```
+
+Confirmed Cases
+======================================================================
+  Row 
+-----------------------------------------------------------------------
+### Map
+
+```{r tabsets, echo=FALSE, cache=TRUE}
+  observe({ #update th county selection
+   updateSelectInput(session, "County", choices = sort(unique(spatial_data()$County)))
+  })
+
+ #if exists(merged_data)
+  # print("merged_data exists")
+  # Render Leaflet Map
+output$map <- renderLeaflet({
+    
+    sp <- spatial_data() # store the spatial county data
+
+    map <- leaflet(sp) %>%# tis dataset store the information (store map as out)
+      addProviderTiles("CartoDB.Positron") %>%
+      clearShapes() %>%
+      addPolygons(
+        stroke = TRUE, smoothFactor = 0.1,
+      fillOpacity = 0.2,
+      layerId = ~County
+      )
+    
+    map
+  })
+  
+  # click county
+click_county <- eventReactive(input$map_shape_click, {  
+  #Observes the CLICKING in a MAP
+  x <- input$map_shape_click
+  y <- x$id
+  return(y)
+  
+  })
+
+county_numbers <- reactive({  #creates a variable that user can modify the output of via input (click)
+  input$map_shape_click$id
+  clicked_id <- input$map_shape_click$id # Get the id of the clicked shape, THIS is county
+  print(clicked_id) # Print the clicked ID, returns county
+})
+
+observe({
+  req(county_numbers())
+  proxy <- leafletProxy("map")
+  sub <- dplyr::filter(spatial_data(), County %in% county_numbers())
+  
+  box <- st_bbox(sub) %>% as.vector()
+  
+  # Check if 'sub' is empty
+  if (nrow(sub) == 0) {
+    return(NULL) # No data to display
+  }
+  
+  # Clear old selection on map, and add new selection
+  proxy %>%      #When I click on a shape, this will make sure the NEW shape is highlighted and clear previous.
+    clearGroup(group = "sub") %>%
+    addPolygons(
+      data = sub, fill = FALSE, color = "#FFFF00", #color assigned to newer polygons
+      opacity = 1, group = "sub", weight = 1.5
+    ) %>%
+    fitBounds( #bounds of the polygon as array
+      lng1 = box[1],
+      lat1 = box[2],
+      lng2 = box[3],
+      lat2 = box[4]
+    )
+})
+
+
+# Capture and highlight clicked county
+  observeEvent(click_county(), {   #output depends on the click_county() function
+  # Add the clicked tract to the map in aqua, and remove when a new one is clicked
+  map <- leafletProxy("map") %>%
+    removeShape("County") %>%
+    addPolygons(
+      data = filter(spatial_data(), County == click_county()), fill = FALSE,
+      color = "#00FFFF", opacity = 1, layerId = "County",
+      weight = 1.2
+    )
+})
+
+county_data <- reactive({
+  # Fetch data for the clicked tract
+  return(filter(texas_confirmed_cases(), County == click_county()))  #spatial_data was changed for texas_confirmed cases 
+}) # they both contain County as an id so it should not cause any "trouble"
+
+leafletOutput("map")
+
+
+```
+
+### Confirmed Cases
+
+```{r}
+#this means that the computer will need to do math and aggregate the cases per MONTH 
+ # if no selection is given then by whole year (how to toggle that option ----  maybe a checkbox?)
+#make a barplot that shows confirmed cases in the zipcode area, by month 
+output$month_county <- renderPlot({   #now the error is here #so this works, A LOT
+
+  txvirus <- texas_confirmed_cases()  # Get the zipcode data based on user clicks FROM my dataset
+  cd <- county_data()  # Get the zipcode data based on user clicks
+  #table
+  # Filter data by inputed zipcode (the click, the click)
+  #bexar_med<- bm %>% filter(zipcode == zd)
+  
+  
+  # add something that sees the month being selected in the sidebar
+  # observe 
+  #create filtered data frame for age data
+  cases_per_month_county<- cd %>% 
+  select(County,month,year,confirmed_cases_per_day,disease) %>% 
+  group_by(County,month,disease) %>% 
+  summarize(confirmed_cases_per_day = n(), .groups = "drop")
+
+  print(paste("Plotting for county:", unique(cd$County)))
+
+# Create the zipcode-specific age distribution plot using ggplot2
+  ggplot(cases_per_month_county, aes(x = month, y = confirmed_cases_per_day,fill = disease)) +
+    geom_bar(stat = "identity", width = 0.7) +
+    theme_minimal() +
+    labs(title = paste0("Confirmed Cases in County ", unique(cd$County)),
+         x = "Month",
+         y = "Count") #+
+    #scale_fill_manual(values = c("#d01010", "#10d010", "#1010d0", "#d0d010")) +  # Four distinct colors
+    #geom_text(aes(label = n), position = position_stack(vjust = 0.5), size = 5) +  # Add data labels
+    #theme(
+    #  axis.title.x = element_text(size = 14),   # x-axis title size
+    #  axis.title.y = element_text(size = 14),   # Adjust y-axis title size
+    ##  axis.text.x = element_text(size = 12),     # Adjust x-axis text size
+    #  axis.text.y = element_text(size = 12),     # Adjust y-axis text size
+    ##  plot.title = element_text(size = 16, face = "bold"),  # Adjust plot title size
+    #  legend.text = element_text(size = 12)      # Adjust legend text size if needed
+    #)
+ })
+
+# In the UI section, add the conditional output rendering
+#uiOutput("ageplot")  
+
+plotOutput("month_county")
+
+```
+
+
+
+
+
+
